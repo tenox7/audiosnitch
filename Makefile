@@ -1,21 +1,14 @@
 APP_NAME = Audio Snitch
 BUNDLE_NAME = AudioSnitch
-CLI_BINARY = audiosnitch
 APP_BUNDLE = $(BUNDLE_NAME).app
 DMG_NAME = $(BUNDLE_NAME).dmg
 
-CLI_SRC = audiosnitch.swift
 APP_SRC = AudioSnitch/main.swift
 APP_PLIST = AudioSnitch/Info.plist
 
-.PHONY: all cli app dmg clean install uninstall
+.PHONY: all app dmg clean
 
-all: cli app
-
-cli: $(CLI_BINARY)
-
-$(CLI_BINARY): $(CLI_SRC)
-	swiftc -O -o $@ $< -framework CoreAudio
+all: app
 
 app: $(APP_BUNDLE)
 
@@ -39,13 +32,6 @@ dmg: $(APP_BUNDLE)
 	@echo "Created $(DMG_NAME)"
 
 clean:
-	rm -f $(CLI_BINARY)
 	rm -rf $(APP_BUNDLE)
 	rm -f $(DMG_NAME)
 	rm -rf dmg_temp
-
-install: $(CLI_BINARY)
-	cp $(CLI_BINARY) /usr/local/bin/
-
-uninstall:
-	rm -f /usr/local/bin/$(CLI_BINARY)
